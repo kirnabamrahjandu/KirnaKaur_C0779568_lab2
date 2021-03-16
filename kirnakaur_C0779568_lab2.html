@@ -1,0 +1,80 @@
+<html>
+<font size="8" color="green">Final test lab</font><br><br>
+<div id="remove-detail">
+    Number of rows: <input type="text" id="t1" /><br><br>
+    Number of cols: <input type="text" id="t2" /><br><br>
+    <button id="b1" onclick="generateTable()">Generate Table</button><br><br>
+</div>
+
+
+<button id="b2" onclick="addColumn()">Add Column</button>
+
+<button id="b3" onclick="addRow()">Add Row</button>
+
+<script type="text/javascript">
+
+    function addRow() {
+        var getRootElement = document.getElementById('add-other-element').getElementsByTagName('tbody')[0];
+        var getTotalRows = getRootElement.getElementsByTagName('tr');
+        var cloneNewElement = cloneOtherElement(getTotalRows[getTotalRows.length - 1]);
+        cloneNewElement = replaceString(cloneNewElement.innerHTML, 'Row-' + (getTotalRows.length), 'Row-' + (getTotalRows.length + 1));
+        var data = document.createElement('tr');
+        data.innerHTML = cloneNewElement;
+        getRootElement.appendChild(data);
+    }
+    //REPLACE THE ROWS OR COLUMNS NAME
+    function replaceString(str, find, replace) {
+        return str.replace(new RegExp(find, 'g'), replace);
+    }
+
+    function addColumn() {
+        var getTotalRowsCount = document.getElementById('add-other-element').getElementsByTagName('tr');
+        var i = 0;
+        var rowCount;
+        var columnCount;
+        var cloneNewElement;
+        while (rowCount = getTotalRowsCount[i++]) {
+            columnCount = rowCount.getElementsByTagName('td');
+            cloneNewElement = cloneOtherElement(columnCount[columnCount.length - 1]);
+            cloneNewElement = replaceString(cloneNewElement.innerHTML, 'Column-' + (columnCount.length), 'Column-' + (columnCount.length + 1));
+            var data = document.createElement('td');
+            data.innerHTML = cloneNewElement;
+            columnCount[0].parentNode.appendChild(data);
+        }
+    }
+    //CLONE THE EXISTING ELEMENT TO ADD NEW
+    function cloneOtherElement(elem) {
+        var cloumnElement = elem.cloneNode(true);
+        return cloumnElement;
+    }
+    // GENERATE TABLE ACCORDING TO ROWS AND COLUMNS
+    function generateTable() {
+        var body = document.getElementsByTagName("body")[0];
+        var row_count = document.getElementById("t1").value;
+        var column_count = document.getElementById("t2").value;
+        var tble = document.createElement("table");
+        tble.setAttribute("id", "add-other-element");
+        var tblBody = document.createElement("tbody");
+        for (var i = 1; i <= row_count; i++) {
+            var row = document.createElement("tr");
+            row.setAttribute("id", i);
+            for (var j = 1; j <= column_count; j++) {
+                var cell = document.createElement("td");
+                var cellText = document.createTextNode("Row-" + i + ", Column-" + j);
+                cell.appendChild(cellText);
+                row.appendChild(cell);
+            }
+
+            tblBody.appendChild(row);
+        }
+
+        tble.appendChild(tblBody);
+        body.appendChild(tble);
+        tble.setAttribute("border", "2");
+        var generateButton = document.getElementById("remove-detail");
+        generateButton.remove();
+    }
+
+</script>
+
+</html>
